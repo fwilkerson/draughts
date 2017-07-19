@@ -1,12 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { observer } from "mobx-react";
 
-const Marker = props =>
-  <div className={`circle ${props.player}${props.active ? " active" : ""}`} />;
+import { PLAYER_ONE, PLAYER_TWO } from "../constants";
+
+const Marker = ({ player, active }) =>
+  <div className={`circle ${player}${active ? " active" : ""}`} />;
 
 Marker.propTypes = {
-  player: PropTypes.string.isRequired,
+  player: PropTypes.oneOf([PLAYER_ONE, PLAYER_TWO]).isRequired,
   active: PropTypes.bool
 };
 
-export default Marker;
+export default observer(Marker);
