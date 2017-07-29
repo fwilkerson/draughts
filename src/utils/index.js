@@ -1,26 +1,22 @@
-import { PLAYER_ONE, PLAYER_TWO, RIGHT, LEFT } from "../constants";
+export const PLAYER_ONE = "player-one",
+  PLAYER_TWO = "player-two",
+  RIGHT = "RIGHT",
+  LEFT = "LEFT";
 
 export function getInitialBoardState() {
-  const board = [
-    ["", "", "", "", "", "", "", ""],
-    ["", "", "", "", "", "", "", ""],
-    ["", "", "", "", "", "", "", ""],
-    ["", "", "", "", "", "", "", ""],
-    ["", "", "", "", "", "", "", ""],
-    ["", "", "", "", "", "", "", ""],
-    ["", "", "", "", "", "", "", ""],
-    ["", "", "", "", "", "", "", ""]
-  ];
+  const board = getEmptyBoard();
   for (let y = 0; y < 8; y++) {
     const offset = getOffset(y);
     for (let x = 0; x < 8; x++) {
+      board[y][x].y = y;
+      board[y][x].x = x;
       const live = x % 2 === offset;
       if (live) {
         if (y < 3) {
-          board[y][x] = PLAYER_TWO;
+          board[y][x].player = PLAYER_TWO;
         }
         if (y > 4) {
-          board[y][x] = PLAYER_ONE;
+          board[y][x].player = PLAYER_ONE;
         }
       }
     }
@@ -32,9 +28,8 @@ export function getOffset(y) {
   return (y + 1) % 2;
 }
 
-export function isSquareActive(activeSquare, y, x) {
-  if (!activeSquare) return false;
-  return activeSquare.y === y && activeSquare.x === x;
+export function isSquareActive(activeY, activeX, y, x) {
+  return activeY === y && activeX === x;
 }
 
 export function isMoveValid(activeSquare, y, x) {
@@ -102,8 +97,108 @@ export function getJumpedSquare(activeSquare, gameBoard, direction) {
 
   const jumpedSquare = gameBoard[targetY][targetX];
 
-  if (jumpedSquare && jumpedSquare !== activeSquare.player)
-    return { y: targetY, x: targetX };
+  if (jumpedSquare.player && jumpedSquare.player !== activeSquare.player)
+    return jumpedSquare;
 
   return null;
+}
+
+export const switchPlayer = memoize(activePlayer => {
+  return activePlayer === PLAYER_ONE ? PLAYER_TWO : PLAYER_ONE;
+});
+
+export function memoize(func) {
+  const cache = {};
+  return function() {
+    const key = JSON.stringify(arguments);
+    if (cache[key]) return cache[key];
+    const val = func.apply(this, arguments);
+    cache[key] = val;
+    return val;
+  };
+}
+
+function getEmptyBoard() {
+  return [
+    [
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false }
+    ],
+    [
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false }
+    ],
+    [
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false }
+    ],
+    [
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false }
+    ],
+    [
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false }
+    ],
+    [
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false }
+    ],
+    [
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false }
+    ],
+    [
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false },
+      { player: "", active: false }
+    ]
+  ];
 }

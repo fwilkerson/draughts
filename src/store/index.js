@@ -1,24 +1,34 @@
-import { action, observable } from "mobx";
+import { action, computed, observable } from "mobx";
 
 import {
   getInitialBoardState,
   getJumpedSquare,
   isJumpLocationValid,
-  isMoveValid
+  isMoveValid,
+  PLAYER_ONE,
+  switchPlayer
 } from "../utils";
 
 export default observable({
   gameBoard: getInitialBoardState(),
   activeSquare: null,
+  activePlayer: PLAYER_ONE,
+  playerDisplay: computed(function() {
+    return this.activePlayer === PLAYER_ONE ? "brown" : "orange";
+  }),
   squareSelected: action.bound(function(y, x) {
     const { activeSquare, gameBoard } = this;
     const targetSquare = gameBoard[y][x];
 
-    // is the square occupied?
-    if (targetSquare) {
-      // can target square become the active square?
-      if (!activeSquare || targetSquare === activeSquare.player)
-        this.activeSquare = { y, x, player: targetSquare };
+    if (targetSquare.player === this.activePlayer) {
+      // is the player simply switching pieces?
+      if (activeSquare) this.activeSquare.active = false;
+
+      // set the new active square
+      this.activeSquare = targetSquare;
+      this.activePlayer = targetSquare.player;
+      this.activeSquare.active = true;
+
       return;
     }
 
@@ -32,6 +42,14 @@ export default observable({
 
     const jumpedSquare = getJumpedSquare(activeSquare, gameBoard, direction);
     if (jumpedSquare) return claimSquare.call(this, y, x, jumpedSquare);
+  }),
+  endTurn: action.bound(function() {
+    this.activePlayer = switchPlayer(this.activePlayer);
+  }),
+  resetGame: action.bound(function() {
+    this.gameBoard = getInitialBoardState();
+    this.activeSquare = null;
+    this.activePlayer = PLAYER_ONE;
   })
 });
 
@@ -43,8 +61,9 @@ export default observable({
  * @param {?Object} jumpedSquare - if move was a jump, this square will be cleared
  */
 const claimSquare = action(function(y, x, jumpedSquare = null) {
-  if (jumpedSquare) this.gameBoard[jumpedSquare.y][jumpedSquare.x] = "";
-  this.gameBoard[this.activeSquare.y][this.activeSquare.x] = "";
-  this.gameBoard[y][x] = this.activeSquare.player;
+  if (jumpedSquare) jumpedSquare.player = "";
+  this.activeSquare.player = "";
+  this.activeSquare.active = false;
+  this.gameBoard[y][x].player = this.activePlayer;
   this.activeSquare = null;
 });
