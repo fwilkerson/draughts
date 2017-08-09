@@ -6,7 +6,7 @@ import GameMenuActions from "./GameMenuActions";
 function GameMenu({ player }) {
   return (
     <div className="menu">
-      <p>current turn</p>
+      <p>current player</p>
       <h2>
         {player}
       </h2>

@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "mobx-react";
 
-import Root from "./Root";
+import Root from "./components/Root";
 import store from "./store";
 import registerServiceWorker from "./registerServiceWorker";
 

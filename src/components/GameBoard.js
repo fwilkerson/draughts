@@ -7,7 +7,7 @@ import Squares from "./Squares";
 function GameBoard({ gameBoard }) {
   return gameBoard.map((squares, y) =>
     <div key={y} className="row">
-      <Squares y={y} squares={squares} />
+      <Squares squares={squares} />
     </div>
   );
 }

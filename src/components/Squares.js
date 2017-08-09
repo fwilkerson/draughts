@@ -8,12 +8,12 @@ const getSquareStyle = memoize(
   (y, x) => `square${x % 2 === getOffset(y) ? " black" : ""}`
 );
 
-function Squares({ y, squares, squareSelected }) {
-  return squares.map((square, x) =>
+function Squares({ squares, squareSelected }) {
+  return squares.map(square =>
     <div
-      key={x}
-      className={getSquareStyle(y, x)}
-      onClick={() => squareSelected(y, x)}
+      key={square.x}
+      className={getSquareStyle(square.y, square.x)}
+      onClick={() => squareSelected(square.y, square.x)}
     >
       {square.player && <Marker {...square} />}
     </div>

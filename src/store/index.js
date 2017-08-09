@@ -44,6 +44,10 @@ export default observable({
     if (jumpedSquare) return claimSquare.call(this, y, x, jumpedSquare);
   }),
   endTurn: action.bound(function() {
+    if (this.activeSquare) {
+      this.activeSquare.active = false;
+      this.activeSquare = null;
+    }
     this.activePlayer = switchPlayer(this.activePlayer);
   }),
   resetGame: action.bound(function() {

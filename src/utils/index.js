@@ -28,10 +28,6 @@ export function getOffset(y) {
   return (y + 1) % 2;
 }
 
-export function isSquareActive(activeY, activeX, y, x) {
-  return activeY === y && activeX === x;
-}
-
 export function isMoveValid(activeSquare, y, x) {
   // moving along x axis is same for both players
   const xIsValid = x === activeSquare.x + 1 || x === activeSquare.x - 1;
