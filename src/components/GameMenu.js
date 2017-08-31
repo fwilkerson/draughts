@@ -1,5 +1,5 @@
 import React from "react";
-import { inject, observer } from "mobx-react";
+import { inject } from "mobx-react";
 
 import GameMenuActions from "./GameMenuActions";
 
@@ -17,4 +17,4 @@ function GameMenu({ player }) {
 
 export default inject(({ store }) => ({
   player: store.playerDisplay
-}))(observer(GameMenu));
+}))(GameMenu);

@@ -1,5 +1,5 @@
 import React from "react";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 
 import Marker from "./Marker";
 import { getOffset, memoize } from "../utils";
@@ -20,6 +20,4 @@ function Squares({ squares, squareSelected }) {
   );
 }
 
-export default inject(({ store }) => ({
-  squareSelected: store.squareSelected
-}))(observer(Squares));
+export default observer(Squares);

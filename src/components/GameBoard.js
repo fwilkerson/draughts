@@ -1,17 +1,18 @@
 import React from "react";
-import { inject, observer } from "mobx-react";
+import { inject } from "mobx-react";
 
 import Squares from "./Squares";
 
 // TODO: Player Turns, Crowns, Declare Winner
-function GameBoard({ gameBoard }) {
+function GameBoard({ gameBoard, squareSelected }) {
   return gameBoard.map((squares, y) =>
     <div key={y} className="row">
-      <Squares squares={squares} />
+      <Squares squares={squares} squareSelected={squareSelected} />
     </div>
   );
 }
 
 export default inject(({ store }) => ({
-  gameBoard: store.gameBoard
-}))(observer(GameBoard));
+  gameBoard: store.gameBoard,
+  squareSelected: store.squareSelected
+}))(GameBoard);

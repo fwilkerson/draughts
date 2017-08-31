@@ -3,30 +3,33 @@ export const PLAYER_ONE = "player-one",
   RIGHT = "RIGHT",
   LEFT = "LEFT";
 
-export function getInitialBoardState() {
-  const board = getEmptyBoard();
+export function getDefaultBoard() {
+  const board = [];
   for (let y = 0; y < 8; y++) {
-    const offset = getOffset(y);
+    board.push([]);
     for (let x = 0; x < 8; x++) {
-      board[y][x].y = y;
-      board[y][x].x = x;
-      const live = x % 2 === offset;
-      if (live) {
-        if (y < 3) {
-          board[y][x].player = PLAYER_TWO;
-        }
-        if (y > 4) {
-          board[y][x].player = PLAYER_ONE;
-        }
-      }
+      board[y].push({
+        active: false,
+        player: getPlayer(y, x),
+        x,
+        y
+      });
     }
   }
   return board;
 }
 
-export function getOffset(y) {
-  return (y + 1) % 2;
+function getPlayer(y, x) {
+  if (x % 2 === getOffset(y)) {
+    if (y < 3) return PLAYER_TWO;
+    if (y > 4) return PLAYER_ONE;
+  }
+  return "";
 }
+
+export const getOffset = memoize(y => {
+  return (y + 1) % 2;
+});
 
 export function isMoveValid(activeSquare, y, x) {
   // moving along x axis is same for both players
@@ -112,89 +115,4 @@ export function memoize(func) {
     cache[key] = val;
     return val;
   };
-}
-
-function getEmptyBoard() {
-  return [
-    [
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false }
-    ],
-    [
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false }
-    ],
-    [
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false }
-    ],
-    [
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false }
-    ],
-    [
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false }
-    ],
-    [
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false }
-    ],
-    [
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false }
-    ],
-    [
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false },
-      { player: "", active: false }
-    ]
-  ];
 }

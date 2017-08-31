@@ -1,5 +1,5 @@
 import React from "react";
-import { inject, observer } from "mobx-react";
+import { inject } from "mobx-react";
 
 function GameMenuActions({ endTurn, resetGame }) {
   return (
@@ -14,4 +14,4 @@ function GameMenuActions({ endTurn, resetGame }) {
 export default inject(({ store }) => ({
   endTurn: store.endTurn,
   resetGame: store.resetGame
-}))(observer(GameMenuActions));
+}))(GameMenuActions);
