@@ -1,15 +1,14 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { observer } from "mobx-react";
 
-import { PLAYER_ONE, PLAYER_TWO } from "../constants";
+import { memoize } from "../utils";
 
-const Marker = ({ player, active }) =>
-  <div className={`circle ${player}${active ? " active" : ""}`} />;
+const getMarkerStyle = memoize(
+  (player, active) => `circle ${player}${active ? " active" : ""}`
+);
 
-Marker.propTypes = {
-  player: PropTypes.oneOf([PLAYER_ONE, PLAYER_TWO]).isRequired,
-  active: PropTypes.bool
-};
+function Marker({ player, active }) {
+  return <div className={getMarkerStyle(player, active)} />;
+}
 
 export default observer(Marker);
